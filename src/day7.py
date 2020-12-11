@@ -17,28 +17,20 @@ if __name__ == '__main__':
                     'dotted black bags contain no other bags.']
     """
     # Part 1
-    def get_bags_that_contain(bag_colour):
-        bags = []
-        for line in file_lines:    
-            matches = re.findall(f'.*contains*.*{bag_colour} bags*.*', line)
-            if matches != []:
-                matches = re.findall('.*bags contains*', matches[0])
-                bags.append(matches[0][:matches[0].find(' ', matches[0].find(' ') + 1)])
-        return bags
-
-    bags = ['shiny gold']
-    all_bags = []
-    count = 0
+    bags_to_find_parents = ['shiny gold']
+    parent_bags_found = []
     while True:
-        temp = []
-        for bag in bags:
-            temp += get_bags_that_contain(bag)
-        if temp == []:
+        parent_bags = []
+        for bag in bags_to_find_parents:
+            matches = re.findall(f'.*contains*.*{bag} bags*.*', '\n'.join(line for line in file_lines))
+            matches = re.findall('.*bags contains*', '\n'.join(match for match in matches))
+            parent_bags += [match[:match.find(' ', match.find(' ') + 1)] for match in matches]
+        if parent_bags == []:
             break
         else:
-            bags = temp
-            all_bags += temp
-    print(f'Total number of bags containing shiny gold: {len(set(all_bags))}')
+            bags_to_find_parents = parent_bags
+            parent_bags_found += parent_bags
+    print(f'Total number of bags containing shiny gold: {len(set(parent_bags_found))}')
 
     # Part 2
     def get_bags_that_are_in(bag_colour):
