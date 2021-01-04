@@ -16,5 +16,18 @@ if __name__ == '__main__':
             break
         else:
             index += 1
-    print(f"First number that isn't a sum from the previous 25: {file_lines[index]}")    
+    invalid_number = file_lines[index]
+    print(f"First number that isn't a sum from the previous 25: {invalid_number}")    
     
+    # Part 2
+    for ic, i in enumerate(file_lines):
+        total = 0
+        for jc, j in enumerate(file_lines[ic + 1:]):
+            total += j
+            if total > invalid_number:
+                break
+            elif total == invalid_number:
+                c_range = file_lines[ic : ic + jc]
+                print(f'Sum of smallest and largest number in range: {min(c_range) + max(c_range)}')
+                exit(0)
+
